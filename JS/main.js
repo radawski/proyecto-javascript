@@ -1,56 +1,40 @@
-// variables
-const productos = [
-  {
-    titulo: "Bestiario - Julio Cortazar",
-    imagen: "img/bestiario Cortazar.webp",
-    precio: 49900
-  },
-  {
-    titulo: "Cuentos de amor de locura y de muerte - Horacio Quiroga",
-    imagen: "img/Cuentos de amor de locura y de muerte by Horacio Quiroga.webp",
-    precio: 4550
-  },
-  {
-    titulo: "El Aleph - Jorge Luis Borges",
-    imagen: "img/El Aleph by Jorge Luis Borges.webp",
-    precio: 23669
-  },
-  {
-    titulo: "El Tunel - Ernesto Sabato",
-    imagen: "img/el tunel.webp",
-    precio: 12300
-  },
-  {
-    titulo: "Ficciones - Jorge Luis Borges",
-    imagen: "img/Ficciones by Jorge Luis Borges.webp",
-    precio: 14299
-  },
-  {
-    titulo: "Martín Fierro - José Hernández",
-    imagen: "img/Martín Fierro by José Hernández.webp",
-    precio: 3850
-  },
-  {
-    titulo: "Operación Masacre - Rodolfo Walsh",
-    imagen: "img/Operación Masacre by Rodolfo Walsh.webp",
-    precio: 12500
-  },
-  {
-    titulo: "Rayuela - Julio Cortázar",
-    imagen: "img/Rayuela by Julio Cortázar.webp",
-    precio: 23000
-  },
-  {
-    titulo: "Toda Mafalda - Quino",
-    imagen: "img/Toda Mafalda by Quino.webp",
-    precio: 33000
-  }
-];
-
+// VARIABLES
+let productos = [];
 let carrito = [];
 
 
-// funciones
+// FUNCIONES
+
+// Cargar productos desde productos.json
+fetch('productos.json')
+  .then(response => response.json())
+  .then(data => {
+    productos = data;
+    actualizarProductos();
+  })
+  .catch(error => console.error('Error al cargar productos:', error));
+
+
+function actualizarProductos() {
+  const contenedorProductos = document.getElementById('productos');
+  contenedorProductos.innerHTML = '';
+  productos.forEach((producto, index) => {
+    const item = document.createElement('div');
+    item.classList.add('col-md-4');
+    item.innerHTML = `
+      <div class="card mb-3">
+        <img src="${producto.imagen}" class="card-img-top" alt="${producto.titulo}">
+        <div class="card-body">
+          <h5 class="card-title">${producto.titulo}</h5>
+          <p class="card-text">$${producto.precio}</p>
+          <button class="btn btn-primary" onclick="agregarAlCarrito(${index})">Agregar al carrito</button>
+        </div>
+      </div>
+    `;
+    contenedorProductos.appendChild(item);
+  });
+}
+
 function agregarAlCarrito(index) {
   const producto = productos[index];
   const productoEnCarrito = carrito.find(p => p.titulo === producto.titulo);
@@ -114,14 +98,72 @@ function eliminarDelCarrito(titulo) {
   }
 }
 
-// funcion para simular compra (reload a la pagina)
-const reload = document.getElementById("reload");
+// Funcion para simular la compra
+document.addEventListener('DOMContentLoaded', function () {
+  const reload = document.getElementById('reload');
 
-reload.addEventListener("click", () => {
-  carrito=[];
-  localStorage.clear();
-  location.reload();
+  reload.addEventListener('click', function () {
+      Swal.fire({
+          title: 'Formulario de Compra',
+          html: `
+              <div class="form-group">
+                  <label for="name">Nombre Completo</label>
+                  <input type="text" id="name" class="swal2-input" value="Juan Pérez">
+              </div>
+              <div class="form-group">
+                  <label for="email">Correo Electrónico</label>
+                  <input type="email" id="email" class="swal2-input" value="juan.perez@ejemplo.com">
+              </div>
+              <div class="form-group">
+                  <label for="address">Dirección</label>
+                  <input type="text" id="address" class="swal2-input" value="Calle Falsa 123, Ciudad Fantasía">
+              </div>
+              <div class="form-group">
+                  <label for="paymentMethod">Método de Pago</label>
+                  <select id="paymentMethod" class="swal2-input">
+                      <option value="credit_card">Tarjeta de Crédito</option>
+                      <option value="paypal">PayPal</option>
+                      <option value="bank_transfer">Transferencia Bancaria</option>
+                  </select>
+              </div>
+          `,
+          focusConfirm: false,
+          preConfirm: () => {
+              const name = document.getElementById('name').value;
+              const email = document.getElementById('email').value;
+              const address = document.getElementById('address').value;
+              const paymentMethod = document.getElementById('paymentMethod').value;
+
+              if (!name || !email || !address || !paymentMethod) {
+                  Swal.showValidationMessage('Por favor, complete todos los campos.');
+                  return false;
+              }
+
+              return { name, email, address, paymentMethod };
+          }
+      }).then((result) => {
+          if (result.isConfirmed) {
+              const { name, email, address, paymentMethod } = result.value;
+              Swal.fire(
+                  'Compra Realizada',
+                  `¡Compra realizada con éxito!<br><br>
+                  <strong>Detalles:</strong><br>
+                  Nombre: ${name}<br>
+                  Email: ${email}<br>
+                  Dirección: ${address}<br>
+                  Método de Pago: ${paymentMethod}`,
+                  'success'
+              ).then(() => {
+                  // Limpiar el carrito y recargar la página
+                  carrito = [];
+                  localStorage.clear();
+                  location.reload();
+              });
+          }
+      });
+  });
 });
+
 
 // Función para guardar el carrito en localStorage
 function guardarEnLocalStorage() {
@@ -141,3 +183,4 @@ function cargarDesdeLocalStorage() {
 document.addEventListener('DOMContentLoaded', () => {
   cargarDesdeLocalStorage();
 });
+

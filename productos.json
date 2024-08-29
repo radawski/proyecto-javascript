@@ -1,0 +1,47 @@
+[
+    {
+        "titulo": "Bestiario - Julio Cortazar",
+        "imagen": "img/bestiario Cortazar.webp",
+        "precio": 49900
+    },
+    {
+        "titulo": "Cuentos de amor de locura y de muerte - Horacio Quiroga",
+        "imagen": "img/Cuentos de amor de locura y de muerte by Horacio Quiroga.webp",
+        "precio": 4550
+    },
+    {
+        "titulo": "El Aleph - Jorge Luis Borges",
+        "imagen": "img/El Aleph by Jorge Luis Borges.webp",
+        "precio": 23669
+    },
+    {
+        "titulo": "El Tunel - Ernesto Sabato",
+        "imagen": "img/el tunel.webp",
+        "precio": 12300
+    },
+    {
+        "titulo": "Ficciones - Jorge Luis Borges",
+        "imagen": "img/Ficciones by Jorge Luis Borges.webp",
+        "precio": 14299
+    },
+    {
+        "titulo": "Martín Fierro - José Hernández",
+        "imagen": "img/Martín Fierro by José Hernández.webp",
+        "precio": 3850
+    },
+    {
+        "titulo": "Operación Masacre - Rodolfo Walsh",
+        "imagen": "img/Operación Masacre by Rodolfo Walsh.webp",
+        "precio": 12500
+    },
+    {
+        "titulo": "Rayuela - Julio Cortázar",
+        "imagen": "img/Rayuela by Julio Cortázar.webp",
+        "precio": 23000
+    },
+    {
+        "titulo": "Toda Mafalda - Quino",
+        "imagen": "img/Toda Mafalda by Quino.webp",
+        "precio": 33000
+    }
+]
